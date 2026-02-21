@@ -221,9 +221,12 @@ export default function AnimalSpellingGame({ animal, onBack }) {
   };
 
   const handleBoxClick = (boxIndex) => {
+    console.log('Box clicked:', boxIndex, 'Touched letter:', touchedLetter);
     // For mobile: if a letter is touched, try to place it
     if (touchedLetter !== null) {
+      console.log('Trying to place letter', touchedLetter, 'in box', boxIndex);
       if (touchedLetter === boxIndex && letters[touchedLetter] === letters[boxIndex]) {
+        console.log('SUCCESS! Letter placed');
         setPlacedLetters(prev => ({
           ...prev,
           [boxIndex]: letters[boxIndex]
@@ -231,10 +234,12 @@ export default function AnimalSpellingGame({ animal, onBack }) {
         setTouchedLetter(null);
         playSound(800, 0.1, 'sine');
       } else {
+        console.log('WRONG! Letter does not match');
         setTouchedLetter(null);
         playSound(200, 0.2, 'sawtooth');
       }
     } else if (placedLetters[boxIndex]) {
+      console.log('Removing letter from box');
       // Remove letter from box (click to remove)
       setPlacedLetters(prev => {
         const updated = { ...prev };
@@ -272,8 +277,9 @@ export default function AnimalSpellingGame({ animal, onBack }) {
       position: 'relative',
       overflow: 'hidden',
       backgroundImage: `linear-gradient(rgba(255,255,255,${gameState === 'success' ? '0' : '0.3'}), rgba(255,255,255,${gameState === 'success' ? '0' : '0.3'})), url(${imageUrl})`,
-      backgroundSize: 'cover',
+      backgroundSize: 'contain',
       backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
       fontFamily: 'Arial, sans-serif',
       direction: 'rtl',
       transition: 'background-image 0.5s ease-in-out'
@@ -468,7 +474,10 @@ export default function AnimalSpellingGame({ animal, onBack }) {
               key={`letter-${item.originalIndex}`}
               draggable
               onDragStart={(e) => handleDragStart(item.originalIndex, e)}
-              onClick={() => setTouchedLetter(item.originalIndex)}
+              onClick={() => {
+                console.log('Letter clicked:', item.originalIndex);
+                setTouchedLetter(item.originalIndex);
+              }}
               style={{
                 position: 'absolute',
                 top: `${letterPositions[item.originalIndex].top}%`,
@@ -489,7 +498,9 @@ export default function AnimalSpellingGame({ animal, onBack }) {
                 userSelect: 'none',
                 transition: 'all 0.2s',
                 transform: touchedLetter === item.originalIndex ? 'scale(1.1)' : 'scale(1)',
-                border: touchedLetter === item.originalIndex ? '3px solid yellow' : 'none'
+                border: touchedLetter === item.originalIndex ? '3px solid yellow' : 'none',
+                touchAction: 'manipulation',
+                WebkitTapHighlightColor: 'transparent'
               }}
               onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
               onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
