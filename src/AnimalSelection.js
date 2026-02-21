@@ -7,71 +7,71 @@ export default function AnimalSelection({ onSelectAnimal, onBack }) {
       id: 'lion',
       name: 'אריה',
       emoji: '🦁',
-      image: '/images/lion.jpg',
-      audio: '/sounds/arye.mp3'
+      image: `${process.env.PUBLIC_URL}/images/lion.jpg`,
+      audio: `${process.env.PUBLIC_URL}/sounds/arye.mp3`
     },
     {
       id: 'elephant',
       name: 'פיל',
       emoji: '🐘',
-      image: '/images/elephant.jpg',
-      audio: '/sounds/pil.mp3'
+      image: `${process.env.PUBLIC_URL}/images/elephant.jpg`,
+      audio: `${process.env.PUBLIC_URL}/sounds/pil.mp3`
     },
     {
       id: 'parrot',
       name: 'תוקי',
       emoji: '🦜',
-      image: '/images/parrot.jpg',
-      audio: '/sounds/tuki.mp3'
+      image: `${process.env.PUBLIC_URL}/images/parrot.jpg`,
+      audio: `${process.env.PUBLIC_URL}/sounds/tuki.mp3`
     },
     {
       id: 'fox',
       name: 'שועל',
       emoji: '🦊',
-      image: '/images/fox.jpg',
-      audio: '/sounds/shual.mp3'
+      image: `${process.env.PUBLIC_URL}/images/fox.jpg`,
+      audio: `${process.env.PUBLIC_URL}/sounds/shual.mp3`
     },
     {
       id: 'dog',
       name: 'כלב',
       emoji: '🐕',
-      image: '/images/dog.jpg',
-      audio: '/sounds/kelev.mp3'
+      image: `${process.env.PUBLIC_URL}/images/dog.jpg`,
+      audio: `${process.env.PUBLIC_URL}/sounds/kelev.mp3`
     },
     {
       id: 'cat',
       name: 'חתול',
       emoji: '🐱',
-      image: '/images/cat.jpg',
-      audio: '/sounds/chatul.mp3'
+      image: `${process.env.PUBLIC_URL}/images/cat.jpg`,
+      audio: `${process.env.PUBLIC_URL}/sounds/chatul.mp3`
     },
     {
       id: 'camel',
       name: 'גמל',
       emoji: '🐪',
-      image: '/images/camel.jpg',
-      audio: '/sounds/gamal.mp3'
+      image: `${process.env.PUBLIC_URL}/images/camel.jpg`,
+      audio: `${process.env.PUBLIC_URL}/sounds/gamal.mp3`
     },
     {
       id: 'peacock',
       name: 'טווס',
       emoji: '🦚',
-      image: '/images/peacock.jpg',
-      audio: '/sounds/tavus.mp3'
+      image: `${process.env.PUBLIC_URL}/images/peacock.jpg`,
+      audio: `${process.env.PUBLIC_URL}/sounds/tavus.mp3`
     },
     {
       id: 'horse',
       name: 'סוס',
       emoji: '🐴',
-      image: '/images/horse.jpg',
-      audio: '/sounds/sus.mp3'
+      image: `${process.env.PUBLIC_URL}/images/horse.jpg`,
+      audio: `${process.env.PUBLIC_URL}/sounds/sus.mp3`
     },
     {
       id: 'dove',
       name: 'יונה',
       emoji: '🕊️',
-      image: '/images/dove.jpg',
-      audio: '/sounds/yona.mp3'
+      image: `${process.env.PUBLIC_URL}/images/dove.jpg`,
+      audio: `${process.env.PUBLIC_URL}/sounds/yona.mp3`
     }
   ];
 
