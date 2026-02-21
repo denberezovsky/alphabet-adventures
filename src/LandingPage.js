@@ -82,11 +82,12 @@ export default function LandingPage({ onSelectModule }) {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       padding: '40px 20px',
       direction: 'rtl',
       fontFamily: 'Arial, sans-serif',
-      overflow: 'auto'
+      overflowY: 'auto',
+      overflowX: 'hidden'
     }}>
       
       {/* Title */}
@@ -105,11 +106,12 @@ export default function LandingPage({ onSelectModule }) {
       {/* Module Cards Grid */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-        gap: '25px',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+        gap: '15px',
         maxWidth: '1200px',
         width: '100%',
-        padding: '0 20px'
+        padding: '0 20px',
+        marginBottom: '20px'
       }}>
         {modules.map((module) => (
           <div
@@ -117,16 +119,16 @@ export default function LandingPage({ onSelectModule }) {
             onClick={() => onSelectModule(module.id)}
             style={{
               background: module.gradient,
-              borderRadius: '25px',
-              padding: '35px 25px',
+              borderRadius: '20px',
+              padding: '20px 15px',
               cursor: 'pointer',
-              boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+              boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
               transition: 'transform 0.3s, box-shadow 0.3s',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              minHeight: '200px'
+              minHeight: '140px'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-10px) scale(1.05)';
@@ -144,14 +146,14 @@ export default function LandingPage({ onSelectModule }) {
             }}
           >
             <div style={{
-              fontSize: '80px',
-              marginBottom: '15px',
+              fontSize: '50px',
+              marginBottom: '10px',
               animation: 'bounce 2s infinite'
             }}>
               {module.emoji}
             </div>
             <div style={{
-              fontSize: '32px',
+              fontSize: '20px',
               fontWeight: 'bold',
               color: 'white',
               textShadow: '2px 2px 4px rgba(0,0,0,0.3)',

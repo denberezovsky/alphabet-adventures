@@ -6,6 +6,7 @@ export default function AnimalSpellingGame({ animal, onBack }) {
   const [placedLetters, setPlacedLetters] = useState({});
   const [confetti, setConfetti] = useState([]); // For confetti animation
   const audioRef = React.useRef(null); // Reference to audio element
+  const [touchedLetter, setTouchedLetter] = useState(null); // For mobile touch
   
   const word = animal.name;
   const letters = word.split('');
@@ -219,13 +220,28 @@ export default function AnimalSpellingGame({ animal, onBack }) {
     }
   };
 
-  const handleBoxClick = (index) => {
-    // Remove letter from box
-    setPlacedLetters(prev => {
-      const newPlaced = { ...prev };
-      delete newPlaced[index];
-      return newPlaced;
-    });
+  const handleBoxClick = (boxIndex) => {
+    // For mobile: if a letter is touched, try to place it
+    if (touchedLetter !== null) {
+      if (touchedLetter === boxIndex && letters[touchedLetter] === letters[boxIndex]) {
+        setPlacedLetters(prev => ({
+          ...prev,
+          [boxIndex]: letters[boxIndex]
+        }));
+        setTouchedLetter(null);
+        playSound(800, 0.1, 'sine');
+      } else {
+        setTouchedLetter(null);
+        playSound(200, 0.2, 'sawtooth');
+      }
+    } else if (placedLetters[boxIndex]) {
+      // Remove letter from box (click to remove)
+      setPlacedLetters(prev => {
+        const updated = { ...prev };
+        delete updated[boxIndex];
+        return updated;
+      });
+    }
   };
 
   const resetGame = () => {
@@ -401,11 +417,11 @@ export default function AnimalSpellingGame({ animal, onBack }) {
               >
                 {placedLetters[index] || (
                   <span style={{
-                    color: 'rgba(0,0,0,0.08)',
+                    color: 'rgba(0,0,0,0.11)',
                     fontSize: '40px',
                     fontWeight: 'bold',
                     textShadow: 'none',
-                    opacity: 0.5
+                    opacity: 0.6
                   }}>
                     {letter}
                   </span>
@@ -452,13 +468,14 @@ export default function AnimalSpellingGame({ animal, onBack }) {
               key={`letter-${item.originalIndex}`}
               draggable
               onDragStart={(e) => handleDragStart(item.originalIndex, e)}
+              onClick={() => setTouchedLetter(item.originalIndex)}
               style={{
                 position: 'absolute',
                 top: `${letterPositions[item.originalIndex].top}%`,
                 left: `${letterPositions[item.originalIndex].left}%`,
                 width: '70px',
                 height: '70px',
-                backgroundColor: '#2196F3',
+                backgroundColor: touchedLetter === item.originalIndex ? '#1976D2' : '#2196F3',
                 color: 'white',
                 fontSize: '40px',
                 fontWeight: 'bold',
@@ -466,12 +483,13 @@ export default function AnimalSpellingGame({ animal, onBack }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: '12px',
-                cursor: 'grab',
-                boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+                cursor: 'pointer',
+                boxShadow: touchedLetter === item.originalIndex ? '0 6px 12px rgba(0,0,0,0.4)' : '0 4px 6px rgba(0,0,0,0.3)',
                 animation: 'flyIn 0.6s ease-out',
                 userSelect: 'none',
-                transition: 'transform 0.1s',
-                touchAction: 'none'
+                transition: 'all 0.2s',
+                transform: touchedLetter === item.originalIndex ? 'scale(1.1)' : 'scale(1)',
+                border: touchedLetter === item.originalIndex ? '3px solid yellow' : 'none'
               }}
               onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
               onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
