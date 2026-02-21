@@ -222,25 +222,26 @@ export default function AnimalSpellingGame({ animal, onBack }) {
 
   const handleBoxClick = (boxIndex) => {
     console.log('Box clicked:', boxIndex, 'Touched letter:', touchedLetter);
-    // For mobile: if a letter is touched, try to place it
+    
+    // If a letter is selected
     if (touchedLetter !== null) {
-      console.log('Trying to place letter', touchedLetter, 'in box', boxIndex);
-      if (touchedLetter === boxIndex && letters[touchedLetter] === letters[boxIndex]) {
-        console.log('SUCCESS! Letter placed');
+      // Check if the selected letter belongs in THIS box
+      if (letters[boxIndex] === letters[touchedLetter] && boxIndex === touchedLetter) {
+        console.log('CORRECT! Letter', letters[touchedLetter], 'placed in position', boxIndex);
         setPlacedLetters(prev => ({
           ...prev,
-          [boxIndex]: letters[boxIndex]
+          [boxIndex]: letters[touchedLetter]
         }));
         setTouchedLetter(null);
-        playSound(800, 0.1, 'sine');
+        playSound(800, 0.1, 'sine'); // Success sound
       } else {
-        console.log('WRONG! Letter does not match');
+        console.log('WRONG! Letter does not belong here');
         setTouchedLetter(null);
-        playSound(200, 0.2, 'sawtooth');
+        playSound(200, 0.2, 'sawtooth'); // Error sound
       }
     } else if (placedLetters[boxIndex]) {
-      console.log('Removing letter from box');
-      // Remove letter from box (click to remove)
+      console.log('Removing letter from box', boxIndex);
+      // Remove letter from box
       setPlacedLetters(prev => {
         const updated = { ...prev };
         delete updated[boxIndex];
@@ -277,9 +278,8 @@ export default function AnimalSpellingGame({ animal, onBack }) {
       position: 'relative',
       overflow: 'hidden',
       backgroundImage: `linear-gradient(rgba(255,255,255,${gameState === 'success' ? '0' : '0.3'}), rgba(255,255,255,${gameState === 'success' ? '0' : '0.3'})), url(${imageUrl})`,
-      backgroundSize: 'contain',
+      backgroundSize: 'cover',
       backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
       fontFamily: 'Arial, sans-serif',
       direction: 'rtl',
       transition: 'background-image 0.5s ease-in-out'

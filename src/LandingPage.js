@@ -92,15 +92,15 @@ export default function LandingPage({ onSelectModule }) {
       
       {/* Title */}
       <div style={{
-        fontSize: '64px',
+        fontSize: '40px',
         fontWeight: 'bold',
         color: 'white',
-        marginBottom: '50px',
+        marginBottom: '30px',
         textShadow: '4px 4px 8px rgba(0,0,0,0.3)',
         animation: 'fadeIn 1s ease-in',
         textAlign: 'center'
       }}>
-        !בואו נלמד עברית
+        בואו נלמד ביחד
       </div>
 
       {/* Module Cards Grid */}

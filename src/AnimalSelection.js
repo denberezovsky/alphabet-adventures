@@ -131,7 +131,7 @@ export default function AnimalSelection({ onSelectAnimal, onBack }) {
       {/* Animal Grid */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
         gap: '25px',
         padding: '20px',
         maxWidth: '1200px',
@@ -153,7 +153,7 @@ export default function AnimalSelection({ onSelectAnimal, onBack }) {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              minHeight: '200px'
+              minHeight: '140px'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-10px) scale(1.05)';
@@ -171,13 +171,13 @@ export default function AnimalSelection({ onSelectAnimal, onBack }) {
             }}
           >
             <div style={{
-              fontSize: '80px',
-              marginBottom: '15px'
+              fontSize: '50px',
+              marginBottom: '10px'
             }}>
               {animal.emoji}
             </div>
             <div style={{
-              fontSize: '36px',
+              fontSize: '24px',
               fontWeight: 'bold',
               color: '#4CAF50'
             }}>
