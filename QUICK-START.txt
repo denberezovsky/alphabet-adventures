@@ -1,0 +1,42 @@
+🚀 QUICK START GUIDE
+====================
+
+## STEP 1: Download & Extract
+✅ You already have the folder!
+
+## STEP 2: Install Node.js (if not installed)
+Download from: https://nodejs.org/
+Choose LTS version (left button)
+
+## STEP 3: Open Terminal in VS Code
+1. Open the "hebrew-spelling-game" folder in VS Code
+2. Open terminal: View → Terminal (or Ctrl + `)
+3. You can also use GitBash/WSL - all work fine!
+
+## STEP 4: Install Dependencies
+Type in terminal:
+```
+npm install
+```
+Wait 2-3 minutes (downloads packages)
+
+## STEP 5: Run the App!
+Type:
+```
+npm start
+```
+
+✅ Browser opens automatically!
+✅ App is at: http://localhost:3000
+
+## TO STOP:
+Press Ctrl + C in terminal
+
+## DEPLOY TO GITHUB PAGES:
+See README.md for full instructions!
+
+---
+
+THAT'S IT! 🎉
+
+Any issues? Check README.md for troubleshooting!
