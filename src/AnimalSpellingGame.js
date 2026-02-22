@@ -172,11 +172,12 @@ export default function AnimalSpellingGame({ animal, onBack }) {
 
   // Touch drag handlers for mobile
   const handleTouchStart = (letterIndex, e) => {
+    e.stopPropagation();
     const touch = e.touches[0];
     setDraggingLetter(letterIndex);
     setTouchStart({ x: touch.clientX, y: touch.clientY });
     setTouchCurrent({ x: touch.clientX, y: touch.clientY });
-    console.log('Touch start on letter:', letterIndex);
+    console.log('✅ Touch START on letter:', letterIndex, 'at', touch.clientX, touch.clientY);
   };
 
   const handleTouchMove = (e) => {
@@ -184,31 +185,42 @@ export default function AnimalSpellingGame({ animal, onBack }) {
       e.preventDefault(); // Prevent scrolling
       const touch = e.touches[0];
       setTouchCurrent({ x: touch.clientX, y: touch.clientY });
+      console.log('📍 Touch MOVE - dragging letter:', draggingLetter, 'to', touch.clientX, touch.clientY);
     }
   };
 
   const handleTouchEnd = (e) => {
+    console.log('🔚 Touch END - draggingLetter:', draggingLetter, 'touchCurrent:', touchCurrent);
+    
     if (draggingLetter !== null && touchCurrent) {
       const dropX = touchCurrent.x;
       const dropY = touchCurrent.y;
+      
+      console.log('🎯 Looking for box at position:', dropX, dropY);
       
       const boxes = document.querySelectorAll('[data-box-index]');
       let droppedOnBox = null;
       
       boxes.forEach((box) => {
         const rect = box.getBoundingClientRect();
+        console.log('📦 Box', box.getAttribute('data-box-index'), 'rect:', rect.left, rect.top, rect.right, rect.bottom);
         if (dropX >= rect.left && dropX <= rect.right && dropY >= rect.top && dropY <= rect.bottom) {
           droppedOnBox = parseInt(box.getAttribute('data-box-index'));
+          console.log('✅ Found box!', droppedOnBox);
         }
       });
       
-      console.log('Dropped letter', draggingLetter, 'on box', droppedOnBox);
+      console.log('📌 Dropped letter', draggingLetter, 'on box', droppedOnBox);
       
       if (droppedOnBox !== null && draggingLetter === droppedOnBox) {
+        console.log('🎉 CORRECT! Placing letter');
         setPlacedLetters(prev => ({ ...prev, [droppedOnBox]: letters[draggingLetter] }));
         playSound(800, 0.1, 'sine');
       } else if (droppedOnBox !== null) {
+        console.log('❌ WRONG box!');
         playSound(200, 0.2, 'sawtooth');
+      } else {
+        console.log('⚠️ Not dropped on any box');
       }
       
       setDraggingLetter(null);
@@ -281,11 +293,11 @@ export default function AnimalSpellingGame({ animal, onBack }) {
           ...prev,
           [boxIndex]: letters[draggingLetter]
         }));
-        setTouchedLetter(null);
+        setDraggingLetter(null);
         playSound(800, 0.1, 'sine'); // Success sound
       } else {
         console.log('WRONG! Letter does not belong here');
-        setTouchedLetter(null);
+        setDraggingLetter(null);
         playSound(200, 0.2, 'sawtooth'); // Error sound
       }
     } else if (placedLetters[boxIndex]) {
@@ -321,7 +333,10 @@ export default function AnimalSpellingGame({ animal, onBack }) {
   };
 
   return (
-    <div style={{
+    <div 
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      style={{
       width: '100%',
       height: '100vh',
       position: 'relative',
@@ -525,8 +540,6 @@ export default function AnimalSpellingGame({ animal, onBack }) {
               draggable
               onDragStart={(e) => handleDragStart(item.originalIndex, e)}
               onTouchStart={(e) => handleTouchStart(item.originalIndex, e)}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
               style={{
                 position: draggingLetter === item.originalIndex && touchCurrent ? 'fixed' : 'absolute',
                 top: draggingLetter === item.originalIndex && touchCurrent ? `${touchCurrent.y - 35}px` : `${letterPositions[item.originalIndex].top}%`,
