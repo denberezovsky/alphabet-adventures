@@ -170,53 +170,6 @@ export default function AnimalSpellingGame({ animal, onBack }) {
     }
   };
 
-  // Touch drag handlers for mobile
-  const handleTouchStart = (letterIndex, e) => {
-    const touch = e.touches[0];
-    setDraggingLetter(letterIndex);
-    setTouchStart({ x: touch.clientX, y: touch.clientY });
-    setTouchCurrent({ x: touch.clientX, y: touch.clientY });
-    console.log('Touch start on letter:', letterIndex);
-  };
-
-  const handleTouchMove = (e) => {
-    if (draggingLetter !== null && e.touches[0]) {
-      e.preventDefault(); // Prevent scrolling
-      const touch = e.touches[0];
-      setTouchCurrent({ x: touch.clientX, y: touch.clientY });
-    }
-  };
-
-  const handleTouchEnd = (e) => {
-    if (draggingLetter !== null && touchCurrent) {
-      const dropX = touchCurrent.x;
-      const dropY = touchCurrent.y;
-      
-      const boxes = document.querySelectorAll('[data-box-index]');
-      let droppedOnBox = null;
-      
-      boxes.forEach((box) => {
-        const rect = box.getBoundingClientRect();
-        if (dropX >= rect.left && dropX <= rect.right && dropY >= rect.top && dropY <= rect.bottom) {
-          droppedOnBox = parseInt(box.getAttribute('data-box-index'));
-        }
-      });
-      
-      console.log('Dropped letter', draggingLetter, 'on box', droppedOnBox);
-      
-      if (droppedOnBox !== null && draggingLetter === droppedOnBox) {
-        setPlacedLetters(prev => ({ ...prev, [droppedOnBox]: letters[draggingLetter] }));
-        playSound(800, 0.1, 'sine');
-      } else if (droppedOnBox !== null) {
-        playSound(200, 0.2, 'sawtooth');
-      }
-      
-      setDraggingLetter(null);
-      setTouchStart(null);
-      setTouchCurrent(null);
-    }
-  };
-
   // Simple sound generator using Web Audio API
   const playSound = (frequency, duration, type = 'sine') => {
     try {
@@ -270,16 +223,16 @@ export default function AnimalSpellingGame({ animal, onBack }) {
   };
 
   const handleBoxClick = (boxIndex) => {
-    console.log('Box clicked:', boxIndex, 'Touched letter:', draggingLetter);
+    console.log('Box clicked:', boxIndex, 'Touched letter:', touchedLetter);
     
     // If a letter is selected
-    if (draggingLetter !== null) {
+    if (touchedLetter !== null) {
       // Check if the selected letter belongs in THIS box
-      if (letters[boxIndex] === letters[draggingLetter] && boxIndex === draggingLetter) {
-        console.log('CORRECT! Letter', letters[draggingLetter], 'placed in position', boxIndex);
+      if (letters[boxIndex] === letters[touchedLetter] && boxIndex === touchedLetter) {
+        console.log('CORRECT! Letter', letters[touchedLetter], 'placed in position', boxIndex);
         setPlacedLetters(prev => ({
           ...prev,
-          [boxIndex]: letters[draggingLetter]
+          [boxIndex]: letters[touchedLetter]
         }));
         setTouchedLetter(null);
         playSound(800, 0.1, 'sine'); // Success sound
@@ -449,7 +402,6 @@ export default function AnimalSpellingGame({ animal, onBack }) {
             {letters.map((letter, index) => (
               <div
                 key={index}
-                data-box-index={index}
                 onDragOver={handleDragOver}
                 onDrop={(e) => handleDrop(index, e)}
                 onClick={() => handleBoxClick(index)}
@@ -524,16 +476,17 @@ export default function AnimalSpellingGame({ animal, onBack }) {
               key={`letter-${item.originalIndex}`}
               draggable
               onDragStart={(e) => handleDragStart(item.originalIndex, e)}
-              onTouchStart={(e) => handleTouchStart(item.originalIndex, e)}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
+              onClick={() => {
+                console.log('Letter clicked:', item.originalIndex);
+                setTouchedLetter(item.originalIndex);
+              }}
               style={{
-                position: draggingLetter === item.originalIndex && touchCurrent ? 'fixed' : 'absolute',
-                top: draggingLetter === item.originalIndex && touchCurrent ? `${touchCurrent.y - 35}px` : `${letterPositions[item.originalIndex].top}%`,
-                left: draggingLetter === item.originalIndex && touchCurrent ? `${touchCurrent.x - 35}px` : `${letterPositions[item.originalIndex].left}%`,
+                position: 'absolute',
+                top: `${letterPositions[item.originalIndex].top}%`,
+                left: `${letterPositions[item.originalIndex].left}%`,
                 width: '70px',
                 height: '70px',
-                backgroundColor: draggingLetter === item.originalIndex ? '#1976D2' : '#2196F3',
+                backgroundColor: touchedLetter === item.originalIndex ? '#1976D2' : '#2196F3',
                 color: 'white',
                 fontSize: '40px',
                 fontWeight: 'bold',
@@ -541,17 +494,18 @@ export default function AnimalSpellingGame({ animal, onBack }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: '12px',
-                cursor: 'grab',
-                boxShadow: draggingLetter === item.originalIndex ? '0 8px 16px rgba(0,0,0,0.5)' : '0 4px 6px rgba(0,0,0,0.3)',
+                cursor: 'pointer',
+                boxShadow: touchedLetter === item.originalIndex ? '0 6px 12px rgba(0,0,0,0.4)' : '0 4px 6px rgba(0,0,0,0.3)',
                 animation: 'flyIn 0.6s ease-out',
                 userSelect: 'none',
-                transition: draggingLetter === item.originalIndex ? 'none' : 'all 0.2s',
-                transform: draggingLetter === item.originalIndex ? 'scale(1.2)' : 'scale(1)',
-                zIndex: draggingLetter === item.originalIndex ? 1000 : 1,
-                touchAction: 'none',
-                WebkitTapHighlightColor: 'transparent',
-                pointerEvents: draggingLetter === item.originalIndex ? 'none' : 'auto'
+                transition: 'all 0.2s',
+                transform: touchedLetter === item.originalIndex ? 'scale(1.1)' : 'scale(1)',
+                border: touchedLetter === item.originalIndex ? '3px solid yellow' : 'none',
+                touchAction: 'manipulation',
+                WebkitTapHighlightColor: 'transparent'
               }}
+              onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
+              onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
             >
               {item.letter}
             </div>
