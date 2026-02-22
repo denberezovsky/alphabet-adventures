@@ -83,19 +83,20 @@ export default function LandingPage({ onSelectModule }) {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'flex-start',
-      padding: '40px 20px',
+      padding: '20px 15px',
       direction: 'rtl',
       fontFamily: 'Arial, sans-serif',
       overflowY: 'auto',
-      overflowX: 'hidden'
+      overflowX: 'hidden',
+      WebkitOverflowScrolling: 'touch'
     }}>
       
       {/* Title */}
       <div style={{
-        fontSize: '40px',
+        fontSize: '32px',
         fontWeight: 'bold',
         color: 'white',
-        marginBottom: '30px',
+        marginBottom: '20px',
         textShadow: '4px 4px 8px rgba(0,0,0,0.3)',
         animation: 'fadeIn 1s ease-in',
         textAlign: 'center'
@@ -106,11 +107,11 @@ export default function LandingPage({ onSelectModule }) {
       {/* Module Cards Grid */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-        gap: '15px',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+        gap: '12px',
         maxWidth: '1200px',
         width: '100%',
-        padding: '0 20px',
+        padding: '0 15px',
         marginBottom: '20px'
       }}>
         {modules.map((module) => (
@@ -119,16 +120,16 @@ export default function LandingPage({ onSelectModule }) {
             onClick={() => onSelectModule(module.id)}
             style={{
               background: module.gradient,
-              borderRadius: '20px',
-              padding: '20px 15px',
+              borderRadius: '15px',
+              padding: '15px 10px',
               cursor: 'pointer',
-              boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
+              boxShadow: '0 6px 15px rgba(0,0,0,0.3)',
               transition: 'transform 0.3s, box-shadow 0.3s',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              minHeight: '140px'
+              minHeight: '110px'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-10px) scale(1.05)';
@@ -146,14 +147,14 @@ export default function LandingPage({ onSelectModule }) {
             }}
           >
             <div style={{
-              fontSize: '50px',
-              marginBottom: '10px',
+              fontSize: '40px',
+              marginBottom: '8px',
               animation: 'bounce 2s infinite'
             }}>
               {module.emoji}
             </div>
             <div style={{
-              fontSize: '20px',
+              fontSize: '16px',
               fontWeight: 'bold',
               color: 'white',
               textShadow: '2px 2px 4px rgba(0,0,0,0.3)',

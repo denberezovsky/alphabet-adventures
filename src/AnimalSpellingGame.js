@@ -108,7 +108,7 @@ export default function AnimalSpellingGame({ animal, onBack }) {
         setTimeout(() => playClap(), 1100);
         setTimeout(() => playClap(), 1300);
         
-        // Say the word again using your voice recording, then say "great job!"
+        // Say the word again using your voice recording
         setTimeout(() => {
           console.log('Playing celebration audio');
           if (audioRef.current) {
@@ -116,17 +116,6 @@ export default function AnimalSpellingGame({ animal, onBack }) {
             audioRef.current.play()
               .then(() => {
                 console.log('Celebration audio playing');
-                // After your voice says the word, use TTS for "great job"
-                audioRef.current.onended = () => {
-                  console.log('Starting כל הכבוד voice');
-                  setTimeout(() => {
-                    const praiseUtterance = new SpeechSynthesisUtterance('כל הכבוד!');
-                    praiseUtterance.lang = 'he-IL';
-                    praiseUtterance.rate = 1.1;
-                    praiseUtterance.pitch = 1.2;
-                    speechSynthesis.speak(praiseUtterance);
-                  }, 300);
-                };
               })
               .catch(err => console.error('Celebration audio failed:', err));
           } else {
